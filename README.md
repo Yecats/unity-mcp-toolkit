@@ -34,7 +34,7 @@ https://github.com/yecats/unity-mcp-toolkit.git
 
 ## Managing Tools
 
-You can toggle individual MCP Toolkit tools on and off in **Edit > Project Settings > AI > Unity MCP > Tools**. Tools appear under the **MCP Toolkit** category.
+You can toggle individual MCP Toolkit tools on and off in **Edit > Project Settings > AI > Unity MCP > Tools**. Custom tools appear under the **MCP Toolkit** category.
 
 ![MCP Toolkit tools in Project Settings](Images~/projectSettings.png)
 
