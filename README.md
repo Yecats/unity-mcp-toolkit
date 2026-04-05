@@ -32,6 +32,12 @@ https://github.com/yecats/unity-mcp-toolkit.git
 | `Custom.GameViewCapture` | Captures the Game View (the final rendered frame the player sees, including UI overlays and post-processing) and returns it as a base64-encoded PNG. Automatically accounts for OS display scaling (e.g. 125%, 150%, Retina). Works in Edit and Play mode. |
 | `Custom.ForceDomainRefresh` | Forces a domain reload even when the Unity Editor is not in the foreground. Use after modifying scripts externally to trigger recompilation without switching to Unity. |
 
+## Managing Tools
+
+You can toggle individual MCP Toolkit tools on and off in **Edit > Project Settings > AI > Unity MCP > Tools**. Tools appear under the **MCP Toolkit** category.
+
+![MCP Toolkit tools in Project Settings](Images~/projectSettings.png)
+
 ## Contributing
 
 This toolkit is meant to grow over time with tools the community finds useful. If you have an idea for a tool that would make your workflow better, chances are others would benefit from it too. Contributions are welcome and encouraged!

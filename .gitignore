@@ -248,6 +248,7 @@ _pkginfo.txt
 ClientBin/
 ~$*
 *~
+!Images~/
 *.dbmdl
 *.dbproj.schemaview
 *.jfm
