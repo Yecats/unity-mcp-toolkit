@@ -16,7 +16,7 @@ namespace WhatUpGames.McpToolkit.Editor
     /// </summary>
     public static class ForceDomainRefreshTool
     {
-        const string ToolName = "Custom.ForceDomainRefresh";
+        const string ToolName = "McpToolkit.ForceDomainRefresh";
 
         const string Description =
             "Forces a domain reload even when the Unity Editor is not in the foreground. " +

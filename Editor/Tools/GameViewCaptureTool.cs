@@ -22,7 +22,7 @@ namespace WhatUpGames.McpToolkit.Editor
     /// </summary>
     public static class GameViewCaptureTool
     {
-        const string ToolName = "Custom.GameViewCapture";
+        const string ToolName = "McpToolkit.GameViewCapture";
 
         const string Description =
             "Captures a screenshot of the Game View (the final rendered frame the player sees, " +

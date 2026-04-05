@@ -29,8 +29,8 @@ https://github.com/yecats/unity-mcp-toolkit.git
 
 | Tool | Description |
 |---|---|
-| `Custom.GameViewCapture` | Captures the Game View (the final rendered frame the player sees, including UI overlays and post-processing) and returns it as a base64-encoded PNG. Automatically accounts for OS display scaling (e.g. 125%, 150%, Retina). Works in Edit and Play mode. |
-| `Custom.ForceDomainRefresh` | Forces a domain reload even when the Unity Editor is not in the foreground. Use after modifying scripts externally to trigger recompilation without switching to Unity. |
+| `McpToolkit.GameViewCapture` | Captures the Game View (the final rendered frame the player sees, including UI overlays and post-processing) and returns it as a base64-encoded PNG. Automatically accounts for OS display scaling (e.g. 125%, 150%, Retina). Works in Edit and Play mode. |
+| `McpToolkit.ForceDomainRefresh` | Forces a domain reload even when the Unity Editor is not in the foreground. Use after modifying scripts externally to trigger recompilation without switching to Unity. |
 
 ## Managing Tools
 
