@@ -1,6 +1,6 @@
 # Unity MCP Toolkit
 
-Custom MCP tools that extend Unity's official MCP integration with additional editor automation capabilities.
+A community-driven collection of custom MCP tools that extend Unity's official MCP integration. Each tool adds editor automation capabilities that AI coding agents can use to interact with the Unity Editor.
 
 ## Requirements
 
@@ -38,7 +38,7 @@ This toolkit is meant to grow over time with tools the community finds useful. I
 
 Please keep the following in mind:
 
-- **One file per tool.** Each tool and its parameter class should live in a single `.cs` file.
+- **Follow the Unity convention for file structure.** Tool logic goes in `Editor/Tools/`, parameter records go in `Editor/Tools/Parameters/`. One file per tool, one file per params record.
 - **AI-assisted contributions are welcome**, but a human must review the code and PR description before submitting. PRs that appear to be 100% vibe-coded without human review will be sent back.
 
 ## License
