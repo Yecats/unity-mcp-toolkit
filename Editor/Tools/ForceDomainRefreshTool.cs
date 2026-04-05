@@ -19,8 +19,7 @@ namespace WhatUpGames.McpToolkit.Editor
         const string ToolName = "Custom.ForceDomainRefresh";
 
         const string Description =
-            "Forces Unity to scan for changed assets, recompile scripts, and perform a domain reload. " +
-            "Works even when the Unity Editor is not in the foreground. " +
+            "Forces a domain reload even when the Unity Editor is not in the foreground. " +
             "Use after modifying scripts externally to trigger recompilation without switching to Unity.";
 
         const string Title = "Force Asset Refresh and Domain Reload";
