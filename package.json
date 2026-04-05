@@ -1,0 +1,26 @@
+{
+    "name": "com.whatupgames.unity-mcp-toolkit",
+    "version": "0.1.0",
+    "displayName": "Unity MCP Toolkit",
+    "description": "Custom MCP tools that extend Unity's official MCP integration with additional editor automation capabilities.",
+    "unity": "6000.0",
+    "license": "CC0-1.0",
+    "author": {
+        "name": "Stacey Haffner",
+        "url": "https://github.com/yecats"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yecats/unity-mcp-toolkit.git"
+    },
+    "dependencies": {
+        "com.unity.ai.assistant": "2.4.0-pre.1"
+    },
+    "keywords": [
+        "mcp",
+        "ai",
+        "tools",
+        "editor",
+        "automation"
+    ]
+}
