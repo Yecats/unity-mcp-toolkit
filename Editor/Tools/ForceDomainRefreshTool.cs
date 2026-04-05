@@ -25,7 +25,7 @@ namespace WhatUpGames.McpToolkit.Editor
 
         const string Title = "Force Asset Refresh and Domain Reload";
 
-        [McpTool(ToolName, Description, Title, EnabledByDefault = true)]
+        [McpTool(ToolName, Description, Title, EnabledByDefault = true, Groups = new[] { "MCP Toolkit" })]
         public static object HandleCommand()
         {
             try

@@ -69,7 +69,7 @@ namespace WhatUpGames.McpToolkit.Editor
         /// <summary>
         /// Main MCP tool handler. Captures the Game View via GrabPixels and returns base64 PNG.
         /// </summary>
-        [McpTool(ToolName, Description, Title, EnabledByDefault = true)]
+        [McpTool(ToolName, Description, Title, EnabledByDefault = true, Groups = new[] { "MCP Toolkit" })]
         public static object HandleCommand(GameViewCaptureParams parameters)
         {
             int superSize = parameters?.SuperSize ?? 1;
