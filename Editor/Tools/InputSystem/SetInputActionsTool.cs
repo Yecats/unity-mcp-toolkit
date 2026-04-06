@@ -169,7 +169,7 @@ namespace WhatUpGames.McpToolkit.Editor
             if (action == null)
                 throw new ArgumentException($"Action '{p.ActionName}' not found in map '{p.ActionMapName}'.");
 
-            map.RemoveAction(action);
+            action.RemoveAction();
             return $"Removed action '{p.ActionName}' from map '{p.ActionMapName}'.";
         }
 
