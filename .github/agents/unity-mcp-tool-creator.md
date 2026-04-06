@@ -50,10 +50,23 @@ Each subsystem gets its own group string so users can manage tools by category:
 For new subsystems, follow the pattern: `"MCP Toolkit - <Name>"` and create a matching directory.
 
 ### Conditional Compilation
-If a tool depends on an optional Unity package:
-- Add a `versionDefines` entry in `McpToolkit.Editor.asmdef`
-- Define a symbol like `MCP_TOOLKIT_INPUT_SYSTEM`
-- Wrap the entire `.cs` file in `#if SYMBOL` / `#endif`
+The package must never force users to install optional dependencies they don't need. Tools that depend on optional Unity packages (Input System, ProBuilder, Timeline, NavMesh) use conditional compilation so they silently appear when the package is installed and are completely invisible when it's not — no greyed-out entries, no error messages in the MCP settings UI.
+
+To add a tool that depends on an optional package:
+
+1. Add the optional assembly to `references` in `McpToolkit.Editor.asmdef` (e.g., `Unity.InputSystem`)
+2. Add a `versionDefines` entry that defines a symbol when the package is present (e.g., `MCP_TOOLKIT_INPUT_SYSTEM` when `com.unity.inputsystem` >= 1.0.0)
+3. Wrap the **entire** `.cs` file in `#if MCP_TOOLKIT_INPUT_SYSTEM` / `#endif` — including usings
+4. The `.meta` file is still required even though the code may be compiled out
+
+Symbol naming convention: `MCP_TOOLKIT_<PACKAGE>` in SCREAMING_SNAKE_CASE.
+
+| Package | Symbol |
+|---------|--------|
+| `com.unity.inputsystem` | `MCP_TOOLKIT_INPUT_SYSTEM` |
+| `com.unity.probuilder` | `MCP_TOOLKIT_PROBUILDER` |
+| `com.unity.timeline` | `MCP_TOOLKIT_TIMELINE` |
+| `com.unity.ai.navigation` | `MCP_TOOLKIT_NAVMESH` |
 
 ## Verification and Testing
 
@@ -84,4 +97,5 @@ Before submitting code, verify:
 - [ ] Body is wrapped in try/catch with `Response.Error` in the catch
 - [ ] `.meta` file exists for every `.cs` file with a unique 32-char hex GUID
 - [ ] No overlap with Unity's current built-in MCP tools (verified by checking the installed package)
+- [ ] If tool depends on an optional package: entire file wrapped in `#if`, asmdef has both `references` and `versionDefines` entries
 - [ ] Tool tested via MCP call with valid input, invalid input, and no input

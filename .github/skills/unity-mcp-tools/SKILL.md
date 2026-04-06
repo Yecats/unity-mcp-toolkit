@@ -252,14 +252,38 @@ MonoImporter:
 2. Enum validation — return immediately on first invalid value
 3. General exception catch — wraps the entire body
 
-## Conditional Compilation
+## Conditional Compilation (Optional Package Dependencies)
 
-For tools that depend on optional Unity packages (e.g., Input System, ProBuilder):
+The package must never force projects to install optional Unity packages they don't need. Tools that depend on optional packages (Input System, ProBuilder, Timeline, NavMesh) use conditional compilation so they are only compiled when the dependency is present.
 
-### 1. Add versionDefines to the asmdef
+### Why This Works
+
+Unity's asmdef reference resolution is **lenient by design**. When an asmdef lists a reference to an assembly that doesn't exist (because its package isn't installed), Unity **silently ignores** the missing reference — no compile error. The compile error only occurs if C# code actually tries to use types from that missing assembly. The `#if` guard prevents that.
+
+Additionally, Unity's `TypeCache` (which the MCP tool registry uses for discovery via `TypeCache.GetMethodsWithAttribute<McpToolAttribute>()`) only indexes methods from **compiled** assemblies. If the code is excluded by `#if`, the `[McpTool]` methods don't exist in the compiled IL, so the registry never sees them. The tools are completely invisible in the MCP settings UI — no greyed-out entries, no errors.
+
+### Symbol Naming Convention
+
+Symbols follow the pattern `MCP_TOOLKIT_<PACKAGE>` in SCREAMING_SNAKE_CASE:
+
+| Package | Symbol | Subsystem |
+|---------|--------|-----------|
+| `com.unity.inputsystem` | `MCP_TOOLKIT_INPUT_SYSTEM` | Input System |
+| `com.unity.probuilder` | `MCP_TOOLKIT_PROBUILDER` | ProBuilder |
+| `com.unity.timeline` | `MCP_TOOLKIT_TIMELINE` | Timeline |
+| `com.unity.ai.navigation` | `MCP_TOOLKIT_NAVMESH` | NavMesh |
+
+### Step 1: Configure the asmdef
+
+Both `references` AND `versionDefines` are required. The reference allows compilation against the optional API when present; the versionDefine sets the `#if` symbol.
 
 ```json
 {
+    "name": "McpToolkit.Editor",
+    "references": [
+        "Unity.AI.MCP.Editor",
+        "Unity.InputSystem"
+    ],
     "versionDefines": [
         {
             "name": "com.unity.inputsystem",
@@ -270,25 +294,31 @@ For tools that depend on optional Unity packages (e.g., Input System, ProBuilder
 }
 ```
 
-### 2. Wrap the entire file
+### Step 2: Wrap the entire file
 
 ```csharp
 #if MCP_TOOLKIT_INPUT_SYSTEM
 using System;
-// ... rest of usings and code ...
+using UnityEngine;
+using UnityEditor;
+using Unity.AI.MCP.Editor.Helpers;
+using Unity.AI.MCP.Editor.ToolRegistry;
+
 namespace WhatUpGames.McpToolkit.Editor
 {
     public static class GetInputActionsTool
     {
-        // ... tool implementation ...
+        // ... full tool implementation ...
     }
 }
 #endif
 ```
 
-- Wrap the ENTIRE file, not just the class body
-- The `.meta` file is still required even though the code might be compiled out
-- The asmdef also needs the package added to `references` (alongside the `versionDefines`)
+### Rules
+- Wrap the **entire** file contents — usings, namespace, class, everything — inside `#if` / `#endif`
+- The `.meta` file is still required even though the code may be compiled out
+- Never put the `#if` inside the class body or around individual methods — always at file level
+- This pattern is used by `com.unity.cloud.gltfast` (5+ optional deps), `Unity.AI.Search.Editor` (Sentis), and `Unity.PlasticSCM.Editor.Entities` (Entities)
 
 ## Real Example: SetQualitySettings RestoreAndError Pattern
 

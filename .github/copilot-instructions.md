@@ -64,6 +64,18 @@ Each subsystem uses its own group string for the Project Settings UI:
 - Error codes use SCREAMING_SNAKE_CASE prefix (e.g., `INVALID_PARAMETER`, `GET_EXAMPLE_FAILED`)
 - Both come from `Unity.AI.MCP.Editor.Helpers`
 
+## Optional Dependencies
+
+Some tools depend on optional Unity packages (Input System, ProBuilder, Timeline, NavMesh). The package must never force projects to install dependencies they don't need.
+
+This is handled with a single asmdef using `versionDefines` + `#if` conditional compilation:
+
+1. The optional assembly is listed in `references` in `McpToolkit.Editor.asmdef` (e.g., `Unity.InputSystem`)
+2. A `versionDefines` entry defines a preprocessor symbol when the package is installed (e.g., `MCP_TOOLKIT_INPUT_SYSTEM`)
+3. Every `.cs` file that uses types from the optional package wraps its entire contents in `#if MCP_TOOLKIT_INPUT_SYSTEM` / `#endif`
+
+When the package is absent, Unity silently ignores the missing assembly reference and the `#if` blocks are excluded from compilation. The tools are completely invisible — they don't appear in the MCP settings UI at all.
+
 ## UPM Package Requirements
 
 - ALL files in the package (except `Images~/` and `.plans/`) MUST have corresponding `.meta` files
