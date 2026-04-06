@@ -1,6 +1,6 @@
 {
     "name": "com.whatupgames.unity-mcp-toolkit",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "displayName": "Unity MCP Toolkit",
     "description": "Custom MCP tools that extend Unity's official MCP integration with additional editor automation capabilities.",
     "unity": "6000.0",
