@@ -17,10 +17,11 @@ namespace WhatUpGames.McpToolkit.Editor
         const string ToolName = "McpToolkit.SetSceneViewCamera";
 
         const string Description =
-            "Modifies the Scene View camera. Set pivot position, rotation, zoom (size), " +
-            "orthographic/perspective mode, 2D mode, gizmos, lighting, grid visibility, " +
-            "field of view, and rotation lock. Also supports LookAt (move camera to a world " +
-            "point) and FrameGameObject (frame a named object). Only supplied parameters are changed.";
+            "Positions and configures the Scene View camera. Set pivot, rotation, zoom (size), " +
+            "orthographic/perspective, 2D mode, gizmos, lighting, grid, FOV, and rotation lock. " +
+            "Supports LookAt (move to a world point) and FrameGameObject (center and fit a named " +
+            "object). Built-in capture tools render from fixed angles without modifying the camera. " +
+            "This tool gives full control over what the Scene View shows.";
 
         const string Title = "Modify Scene View Camera";
 

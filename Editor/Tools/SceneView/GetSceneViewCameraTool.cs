@@ -17,10 +17,11 @@ namespace WhatUpGames.McpToolkit.Editor
         const string ToolName = "McpToolkit.GetSceneViewCamera";
 
         const string Description =
-            "Reads the Scene View camera state including pivot position, rotation, zoom (size), " +
-            "camera distance, orthographic/perspective mode, 2D mode, gizmos visibility, scene " +
-            "lighting, grid visibility, draw mode, and camera settings (FOV, clip planes, speed). " +
-            "Returns data from the last active Scene View window.";
+            "Reads the Scene View camera state: pivot position, rotation, zoom (size), " +
+            "camera distance, orthographic/perspective mode, 2D mode, gizmos, scene lighting, " +
+            "grid visibility, draw mode, FOV, and clip planes. Built-in tools can capture " +
+            "screenshots from preset angles but do not expose the camera's current state. " +
+            "This tool fills that gap.";
 
         const string Title = "Read Scene View Camera";
 
