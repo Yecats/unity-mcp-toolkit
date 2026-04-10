@@ -422,3 +422,4 @@ FodyWeavers.xsd
 
 # Demo project (local testing only)
 DemoProject/
+DemoProject.meta
