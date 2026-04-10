@@ -27,6 +27,8 @@ namespace WhatUpGames.McpToolkit.Editor
         const string Description =
             "Captures a screenshot of the Game View (the final rendered frame the player sees, " +
             "including UI overlays and post-processing) and returns it as a base64-encoded PNG image. " +
+            "By default, images larger than 1920px in either dimension are downscaled (aspect-ratio " +
+            "preserved) to keep the payload size manageable. Set MaxDimension to 0 for full resolution. " +
             "The Game View window must be open in the Unity Editor. Works in both Play and Edit mode.";
 
         const string Title = "Capture Game View Screenshot";
@@ -55,8 +57,10 @@ namespace WhatUpGames.McpToolkit.Editor
                         properties = new
                         {
                             image_base64 = new { type = "string", description = "Base64-encoded PNG image data" },
-                            width = new { type = "integer", description = "Image width in pixels" },
-                            height = new { type = "integer", description = "Image height in pixels" },
+                            width = new { type = "integer", description = "Image width in pixels (after any downscaling)" },
+                            height = new { type = "integer", description = "Image height in pixels (after any downscaling)" },
+                            original_width = new { type = "integer", description = "Original capture width before downscaling" },
+                            original_height = new { type = "integer", description = "Original capture height before downscaling" },
                             format = new { type = "string", description = "Image format (always 'png')" },
                             size_bytes = new { type = "integer", description = "Size of the PNG data in bytes" }
                         }
@@ -73,6 +77,7 @@ namespace WhatUpGames.McpToolkit.Editor
         public static object HandleCommand(GameViewCaptureParams parameters)
         {
             int superSize = parameters?.SuperSize ?? 1;
+            int maxDimension = parameters?.MaxDimension ?? 1920;
 
             // Validate superSize range
             if (superSize < 1 || superSize > 4)
@@ -80,6 +85,13 @@ namespace WhatUpGames.McpToolkit.Editor
                 return Response.Error(
                     "INVALID_PARAMETER: SuperSize must be between 1 and 4. " +
                     $"Received: {superSize}");
+            }
+
+            if (maxDimension < 0)
+            {
+                return Response.Error(
+                    "INVALID_PARAMETER: MaxDimension must be 0 (disabled) or a positive integer. " +
+                    $"Received: {maxDimension}");
             }
 
             try
@@ -131,6 +143,18 @@ namespace WhatUpGames.McpToolkit.Editor
 
                 try
                 {
+                    int originalWidth = tex.width;
+                    int originalHeight = tex.height;
+
+                    // Downscale if the image exceeds MaxDimension in either axis
+                    if (maxDimension > 0 &&
+                        (tex.width > maxDimension || tex.height > maxDimension))
+                    {
+                        var resized = DownscaleTexture(tex, maxDimension);
+                        UnityEngine.Object.DestroyImmediate(tex);
+                        tex = resized;
+                    }
+
                     byte[] pngBytes = tex.EncodeToPNG();
 
                     if (pngBytes == null || pngBytes.Length == 0)
@@ -140,13 +164,20 @@ namespace WhatUpGames.McpToolkit.Editor
 
                     string base64 = Convert.ToBase64String(pngBytes);
 
+                    string sizeNote = (tex.width != originalWidth || tex.height != originalHeight)
+                        ? $", downscaled from {originalWidth}x{originalHeight}"
+                        : "";
+
                     return Response.Success(
-                        $"Game View screenshot captured successfully ({tex.width}x{tex.height}, {pngBytes.Length} bytes).",
+                        $"Game View screenshot captured successfully ({tex.width}x{tex.height}, " +
+                        $"{pngBytes.Length} bytes{sizeNote}).",
                         new
                         {
                             image_base64 = base64,
                             width = tex.width,
                             height = tex.height,
+                            original_width = originalWidth,
+                            original_height = originalHeight,
                             format = "png",
                             size_bytes = pngBytes.Length
                         });
@@ -262,6 +293,93 @@ namespace WhatUpGames.McpToolkit.Editor
                 Debug.LogError($"[GameViewCapture] GrabPixels failed: {ex.Message}");
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Downscales a Texture2D so that neither dimension exceeds maxDimension,
+        /// preserving aspect ratio. Uses multi-step halving for quality (same
+        /// strategy as Unity's TextureUtils.ResizeTexture).
+        /// </summary>
+        static Texture2D DownscaleTexture(Texture2D source, int maxDimension)
+        {
+            // Calculate target dimensions (aspect-preserving)
+            int targetWidth, targetHeight;
+            if (source.width >= source.height)
+            {
+                targetWidth = maxDimension;
+                targetHeight = Mathf.Max(1, Mathf.RoundToInt((float)source.height * maxDimension / source.width));
+            }
+            else
+            {
+                targetHeight = maxDimension;
+                targetWidth = Mathf.Max(1, Mathf.RoundToInt((float)source.width * maxDimension / source.height));
+            }
+
+            float scaleRatio = Mathf.Max(
+                (float)source.width / targetWidth,
+                (float)source.height / targetHeight);
+
+            // For small ratios a single blit is fine
+            if (scaleRatio <= 2f)
+            {
+                return BlitToTexture2D(source, targetWidth, targetHeight);
+            }
+
+            // Multi-step: repeatedly halve until within 2x of target, then final blit
+            RenderTexture current = RenderTexture.GetTemporary(
+                source.width, source.height, 0, RenderTextureFormat.Default);
+            Graphics.Blit(source, current);
+
+            int curW = source.width;
+            int curH = source.height;
+
+            while (Mathf.Max((float)curW / targetWidth, (float)curH / targetHeight) > 2f)
+            {
+                curW = Mathf.Max(curW / 2, targetWidth);
+                curH = Mathf.Max(curH / 2, targetHeight);
+
+                RenderTexture next = RenderTexture.GetTemporary(
+                    curW, curH, 0, RenderTextureFormat.Default);
+                Graphics.Blit(current, next);
+                RenderTexture.ReleaseTemporary(current);
+                current = next;
+            }
+
+            // Final blit to exact target size
+            RenderTexture final_ = RenderTexture.GetTemporary(
+                targetWidth, targetHeight, 0, RenderTextureFormat.Default);
+            Graphics.Blit(current, final_);
+            RenderTexture.ReleaseTemporary(current);
+
+            RenderTexture oldRt = RenderTexture.active;
+            RenderTexture.active = final_;
+            var result = new Texture2D(targetWidth, targetHeight, TextureFormat.RGBA32, false);
+            result.ReadPixels(new Rect(0, 0, targetWidth, targetHeight), 0, 0, false);
+            result.Apply(false, false);
+            RenderTexture.active = oldRt;
+            RenderTexture.ReleaseTemporary(final_);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Single-pass blit resize for small scale ratios.
+        /// </summary>
+        static Texture2D BlitToTexture2D(Texture source, int targetWidth, int targetHeight)
+        {
+            RenderTexture rt = RenderTexture.GetTemporary(
+                targetWidth, targetHeight, 0, RenderTextureFormat.Default);
+            Graphics.Blit(source, rt);
+
+            RenderTexture oldRt = RenderTexture.active;
+            RenderTexture.active = rt;
+            var result = new Texture2D(targetWidth, targetHeight, TextureFormat.RGBA32, false);
+            result.ReadPixels(new Rect(0, 0, targetWidth, targetHeight), 0, 0, false);
+            result.Apply(false, false);
+            RenderTexture.active = oldRt;
+            RenderTexture.ReleaseTemporary(rt);
+
+            return result;
         }
     }
 }

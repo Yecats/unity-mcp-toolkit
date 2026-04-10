@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.1] - 2026-04-10
+
+### Added
+- **`McpToolkit.GetToolkitInfo`** — Self-describing tool that returns the package version and a categorized list of all toolkit tools with their type, description, and enabled status. AI agents should call this first to discover what the toolkit provides. Enabled by default.
+- Conditional Compilation section in README documenting the optional dependency pattern for contributors.
+
+### Fixed
+- **`McpToolkit.GameViewCapture`** — Added `MaxDimension` downscaling (default 1920px) to prevent MCP payload truncation on high-resolution displays.
+
 ## [0.2.0] - 2026-04-06
 
 ### Added
