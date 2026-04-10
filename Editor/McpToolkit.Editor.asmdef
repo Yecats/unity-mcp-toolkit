@@ -2,7 +2,8 @@
     "name": "McpToolkit.Editor",
     "rootNamespace": "WhatUpGames.McpToolkit.Editor",
     "references": [
-        "Unity.AI.MCP.Editor"
+        "Unity.AI.MCP.Editor",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [
         "Editor"
@@ -13,6 +14,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "1.0.0",
+            "define": "MCP_TOOLKIT_INPUT_SYSTEM"
+        }
+    ],
     "noEngineReferences": false
 }
