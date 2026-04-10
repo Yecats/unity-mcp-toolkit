@@ -3,12 +3,14 @@
 ## [0.2.0] - 2026-04-06
 
 ### Added
+- **`McpToolkit.GetToolkitInfo`** — Returns package version and a categorized list of all toolkit tools with their enabled status, so AI agents can discover what the toolkit provides. Enabled by default.
 - **Project Settings tools** — 5 read tools and 5 write tools for PlayerSettings, QualitySettings, PhysicsSettings, TimeAndAudioSettings, and ScriptExecutionOrder.
 - **Build Settings tools** — `McpToolkit.GetBuildSettings` reads build target, dev/debug/profiler flags, scenes in build, installed platforms, and compilation defines. `McpToolkit.SetBuildSettings` toggles development build flags and manages the scene list (add, remove, enable, disable, reorder). Platform switching and build execution are excluded for safety.
 - **Scene View Camera tools** — `McpToolkit.GetSceneViewCamera` reads camera pivot, rotation, zoom, projection, gizmos, lighting, grid, and draw mode. `McpToolkit.SetSceneViewCamera` modifies camera properties and supports LookAt/FrameGameObject actions.
 - **Input System tools** — `McpToolkit.GetInputActions` lists all Input Action Assets with action maps, actions, bindings, and control schemes. `McpToolkit.SetInputActions` supports CRUD operations on action maps, actions, and bindings, plus wholesale JSON replacement. Requires `com.unity.inputsystem` 1.0.0+ (auto-detected via `versionDefines`).
 - Tool groups in Project Settings UI: tools are organized under collapsible foldouts (MCP Toolkit, MCP Toolkit - Project Settings, MCP Toolkit - Build, MCP Toolkit - Scene View, MCP Toolkit - Input System).
 - Write tools are disabled by default and must be explicitly enabled by the user.
+- Conditional Compilation section in README documenting the optional dependency pattern.
 
 ### Changed
 - Reorganized tool files from flat `Editor/Tools/` into subsystem folders (`General/`, `ProjectSettings/`, `Build/`, `SceneView/`, `InputSystem/`).

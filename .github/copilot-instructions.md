@@ -22,7 +22,7 @@ package.json                    # UPM package manifest
 Editor/
   McpToolkit.Editor.asmdef      # Assembly definition (references Unity.AI.MCP.Editor)
   Tools/
-    General/                    # General-purpose tools (GameViewCapture, ForceDomainRefresh)
+    General/                    # General-purpose tools (GetToolkitInfo, GameViewCapture, ForceDomainRefresh)
     ProjectSettings/            # Project settings read/write tools
     Build/                      # Build settings tools
     SceneView/                  # Scene view camera tools
@@ -45,6 +45,7 @@ Images~/                        # Images for README (~ suffix = Unity ignores th
 - Read tools use `Get` prefix; write tools use `Set` prefix
 - Classes: `public static class <Verb><Noun>Tool`
 - Method: always `public static object HandleCommand(...)` — no variation
+- `McpToolkit.GetToolkitInfo` is the self-describing tool — AI agents call it to discover all available toolkit tools, their types, and enabled status
 
 ### EnabledByDefault
 - **Read tools and general tools**: `EnabledByDefault = true`

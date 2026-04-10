@@ -419,3 +419,6 @@ FodyWeavers.xsd
 
 # Plans (internal development notes)
 .plans/
+
+# Demo project (local testing only)
+DemoProject/

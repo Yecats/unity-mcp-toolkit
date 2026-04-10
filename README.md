@@ -35,6 +35,7 @@ https://github.com/yecats/unity-mcp-toolkit.git
 
 | Tool | Type | Default | Description |
 |---|---|---|---|
+| `McpToolkit.GetToolkitInfo` | Read | On | Returns information about the Unity MCP Toolkit plugin, including version and a categorized list of all available tools with their enabled status. AI agents should call this first to discover toolkit capabilities. |
 | `McpToolkit.GameViewCapture` | Read | On | Captures the Game View as a base64-encoded PNG. Supports a resolution multiplier (1-4x). Accounts for OS display scaling. Works in Edit and Play mode. |
 | `McpToolkit.ForceDomainRefresh` | Action | On | Forces a domain reload even when the Unity Editor is not in the foreground. Use after modifying scripts externally to trigger recompilation without switching to Unity. |
 
@@ -80,7 +81,7 @@ https://github.com/yecats/unity-mcp-toolkit.git
 
 You can toggle individual MCP Toolkit tools on and off in **Edit > Project Settings > AI > Unity MCP > Tools**. Tools are organized into collapsible groups:
 
-- **MCP Toolkit** — General tools (GameViewCapture, ForceDomainRefresh)
+- **MCP Toolkit** — General tools (GetToolkitInfo, GameViewCapture, ForceDomainRefresh)
 - **MCP Toolkit - Project Settings** — All project settings read/write tools
 - **MCP Toolkit - Build** — Build configuration tools
 - **MCP Toolkit - Scene View** — Scene View camera tools
@@ -90,6 +91,16 @@ Write tools are **disabled by default** and must be explicitly enabled by the us
 
 ![MCP Toolkit tools in Project Settings](Images~/projectSettings.png)
 
+## Conditional Compilation
+
+Some tools depend on optional Unity packages (Input System, ProBuilder, Timeline, NavMesh). The toolkit uses `versionDefines` in the assembly definition combined with `#if` preprocessor guards so these tools compile only when their package is installed. When the package is absent, Unity silently ignores the missing assembly reference and the guarded code is excluded from compilation. The tools are completely invisible — they don't appear in the MCP settings UI and the registry never sees them.
+
+| Package | Symbol | Min Version |
+|---------|--------|-------------|
+| `com.unity.inputsystem` | `MCP_TOOLKIT_INPUT_SYSTEM` | 1.0.0 |
+
+Future optional subsystems (ProBuilder, Timeline, NavMesh) will follow the same pattern. See the Input System files under `Editor/Tools/InputSystem/` for a working reference.
+
 ## Contributing
 
 This toolkit is meant to grow over time with tools the community finds useful. If you have an idea for a tool that would make your workflow better, chances are others would benefit from it too. Contributions are welcome and encouraged!
@@ -97,6 +108,7 @@ This toolkit is meant to grow over time with tools the community finds useful. I
 Please keep the following in mind:
 
 - **Follow the Unity convention for file structure.** Tool logic goes in `Editor/Tools/<Subsystem>/`, parameter records are co-located with their tools. One file per tool, one file per params record.
+- **Optional package dependencies:** If your tool depends on a package that might not be installed, wrap the entire `.cs` file in `#if MCP_TOOLKIT_<PACKAGE>` / `#endif` and add both a `references` entry and a `versionDefines` entry to `McpToolkit.Editor.asmdef`. See the Input System tools for the exact pattern.
 - **AI-assisted contributions are welcome**, but a human must review the code and PR description before submitting. PRs that appear to be 100% vibe-coded without human review will be sent back.
 
 ## License
