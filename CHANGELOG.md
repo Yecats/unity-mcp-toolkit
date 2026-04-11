@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2] - 2026-04-10
+
+### Added
+- **Recorder tools** — `McpToolkit.GetRecorderSettings` reads session config, recorder list with type-specific properties (Movie, Image Sequence, Audio, Animation Clip), and recording state. `McpToolkit.SetRecorderSettings` manages session-level settings and the recorder list (add, remove, enable, disable, modify). `McpToolkit.StartRecording` starts a recording session with auto-enter Play mode support. `McpToolkit.StopRecording` stops any active recording. Requires `com.unity.recorder` 5.0.0+ (auto-detected via `versionDefines`).
+- New tool group: **MCP Toolkit - Recorder** in Project Settings UI.
+
+### Changed
+- Updated `McpToolkit.Editor.asmdef` to add `Unity.Recorder.Editor` reference and `MCP_TOOLKIT_RECORDER` version define.
+
 ## [0.2.1] - 2026-04-10
 
 ### Added
