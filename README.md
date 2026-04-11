@@ -9,7 +9,7 @@ A community-driven collection of custom MCP tools that extend Unity's official M
 
 ### Optional Dependencies
 
-- **[Input System](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/index.html)** (`com.unity.inputsystem` 1.0.0 or later) — required for Input System tools. Tools for optional packages appear automatically when the package is installed and are completely hidden when it is not — no errors, no configuration needed.
+- **[Input System](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/index.html)** (`com.unity.inputsystem` 1.0.0 or later) — required for Input System tools.
 - **[Recorder](https://docs.unity3d.com/Packages/com.unity.recorder@5.0/manual/index.html)** (`com.unity.recorder` 5.0.0 or later) — required for Recorder tools.
 
 ## Installation
