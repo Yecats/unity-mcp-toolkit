@@ -3,7 +3,8 @@
     "rootNamespace": "WhatUpGames.McpToolkit.Editor",
     "references": [
         "Unity.AI.MCP.Editor",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.Recorder.Editor"
     ],
     "includePlatforms": [
         "Editor"
@@ -19,6 +20,11 @@
             "name": "com.unity.inputsystem",
             "expression": "1.0.0",
             "define": "MCP_TOOLKIT_INPUT_SYSTEM"
+        },
+        {
+            "name": "com.unity.recorder",
+            "expression": "5.0.0",
+            "define": "MCP_TOOLKIT_RECORDER"
         }
     ],
     "noEngineReferences": false

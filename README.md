@@ -10,6 +10,7 @@ A community-driven collection of custom MCP tools that extend Unity's official M
 ### Optional Dependencies
 
 - **[Input System](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/index.html)** (`com.unity.inputsystem` 1.0.0 or later) — required for Input System tools. Tools for optional packages appear automatically when the package is installed and are completely hidden when it is not — no errors, no configuration needed.
+- **[Recorder](https://docs.unity3d.com/Packages/com.unity.recorder@5.0/manual/index.html)** (`com.unity.recorder` 5.0.0 or later) — required for Recorder tools.
 
 ## Installation
 
@@ -77,6 +78,17 @@ https://github.com/yecats/unity-mcp-toolkit.git
 | `McpToolkit.GetInputActions` | Read | On | Lists all Input Action Assets with action maps, actions, bindings, and control schemes. Supports summary or detailed view per asset. |
 | `McpToolkit.SetInputActions` | Write | Off | Modifies Input Action Assets: add/remove action maps, actions, and bindings. Supports wholesale JSON replacement. |
 
+### Recorder
+
+*Requires `com.unity.recorder` 5.0.0+. Tools appear automatically when the package is installed.*
+
+| Tool | Type | Default | Description |
+|---|---|---|---|
+| `McpToolkit.GetRecorderSettings` | Read | On | Reads the Recorder configuration: session settings (frame rate, record mode, frame/time interval), all configured recorders with type-specific properties, and current recording state. |
+| `McpToolkit.SetRecorderSettings` | Write | Off | Modifies Recorder configuration. Supports session-level settings and recorder list management: add, remove, enable, disable, or modify recorders (Movie, Image Sequence, Audio, Animation Clip). |
+| `McpToolkit.StartRecording` | Action | Off | Starts a recording session using the current Recorder configuration. Automatically enters Play mode. |
+| `McpToolkit.StopRecording` | Action | Off | Stops any active recording session. Output files are written when the recording stops. |
+
 ## Managing Tools
 
 You can toggle individual MCP Toolkit tools on and off in **Edit > Project Settings > AI > Unity MCP > Tools**. Tools are organized into collapsible groups:
@@ -86,6 +98,7 @@ You can toggle individual MCP Toolkit tools on and off in **Edit > Project Setti
 - **MCP Toolkit - Build** — Build configuration tools
 - **MCP Toolkit - Scene View** — Scene View camera tools
 - **MCP Toolkit - Input System** — Input Action tools
+- **MCP Toolkit - Recorder** — Recorder configuration and recording tools
 
 Write tools are **disabled by default** and must be explicitly enabled by the user.
 
@@ -98,6 +111,7 @@ Some tools depend on optional Unity packages (Input System, ProBuilder, Timeline
 | Package | Symbol | Min Version |
 |---------|--------|-------------|
 | `com.unity.inputsystem` | `MCP_TOOLKIT_INPUT_SYSTEM` | 1.0.0 |
+| `com.unity.recorder` | `MCP_TOOLKIT_RECORDER` | 5.0.0 |
 
 Future optional subsystems (ProBuilder, Timeline, NavMesh) will follow the same pattern. See the Input System files under `Editor/Tools/InputSystem/` for a working reference.
 

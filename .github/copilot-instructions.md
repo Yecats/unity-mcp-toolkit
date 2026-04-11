@@ -90,3 +90,7 @@ After making code changes:
 2. Wait ~20-25 seconds for recompilation + MCP reconnection
 3. Test the tool via an MCP client call
 4. Check Unity Console for compilation errors
+
+### Critical Rule: Always Test Through MCP Tools
+
+When testing MCP tools, **NEVER bypass them by using `RunCommand` or direct API calls**. The entire point of testing is to validate the MCP tool implementation. If a tool is disabled and you cannot enable it programmatically, ask the user to enable it in **Edit > Project Settings > AI > Unity MCP > Tools** before proceeding. Do not work around disabled tools — that defeats the purpose of the test.
