@@ -2,6 +2,14 @@
 
 A community-driven collection of custom MCP tools that extend Unity's official MCP integration. Each tool adds editor automation capabilities that AI coding agents can use to interact with the Unity Editor.
 
+## Tutorial
+
+<a href="https://youtu.be/f4xIUiy0D9s"><img src="https://raw.githubusercontent.com/gamedev-resources/unity-mcp-custom-tools-tutorial/main/image/Thumbnail.png" alt="How to Create Custom MCP Tools for Unity" width="400"></a>
+
+Learn how to build your own custom MCP tools for Unity from scratch. This video covers the `[McpTool]` attribute, parameter records with `[McpDescription]`, and common pitfalls that prevent tools from showing up.
+
+**[Watch the tutorial](https://youtu.be/f4xIUiy0D9s)** | **[Get the code](https://github.com/gamedev-resources/unity-mcp-custom-tools-tutorial)**
+
 ## Requirements
 
 - **Unity 6+** (`6000.0` or later)
